@@ -1,0 +1,136 @@
+﻿@model VandanamVillas.Models.Booking
+
+@{
+    ViewBag.Title = "Booking";
+    ViewBag.classBKName = "active";
+    Layout = "~/Views/Shared/_Vandanam.cshtml";
+}
+
+<div class="mg-page-title parallax">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Contact Us</h2>
+                <p>Cogitavisse erant puerilis utrum efficiantur adhuc expeteretur.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mg-page">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h2 class="mg-sec-left-title">Make a Booking</h2>
+                @using (Html.BeginForm("Create", "Booking",FormMethod.Post,new {@class="clearfix" }))
+                {
+                    <div class="mg-contact-form-input">
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name,new {@class="form-control",@maxlength=100 })
+                        @Html.ValidationMessageFor(m => m.Name)
+                        
+                    </div>
+                    <div class="mg-contact-form-input">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @maxlength = 100 })
+                        @Html.ValidationMessageFor(m => m.Email)
+
+                    </div>
+                    <div class="mg-contact-form-input">
+                        @Html.LabelFor(m => m.Mobile)
+                        @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @maxlength = 15 })
+                        @Html.ValidationMessageFor(m => m.Mobile)
+
+                    </div>
+                    <div class="mg-contact-form-input" >
+                        @Html.LabelFor(m => m.CheckInDate)
+
+                        <div class="input-group date mg-check-in">
+                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                            @Html.TextBoxFor(m => m.CheckInDate, "{0: d MMM yyyy}", new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.CheckInDate)
+
+                    </div>
+                    <div class="mg-contact-form-input">
+                        @Html.LabelFor(m => m.NumberofDays)
+                        @Html.TextBoxFor(m => m.NumberofDays, new { @class = "form-control", @maxlength = 3 })
+                        @Html.ValidationMessageFor(m => m.NumberofDays)
+
+                    </div>
+                    <div class="mg-contact-form-input">
+                        @Html.LabelFor(m => m.Message)
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control",@rows="5" })
+                        @Html.ValidationMessageFor(m => m.Message)
+
+                    </div>
+                    <div style="display:none" class="myloader">Please wait...</div>
+                    @*@Html.AntiForgeryToken()*@
+                    <input type="submit" class="btn btn-dark-main pull-right" value="Send">
+                }
+
+                
+            </div>
+            <div class="col-md-6">
+                <h2 class="mg-sec-left-title">Office Address</h2>
+                <p>Consulatu quietem ipsas obruamus. Controversia unam queo firmam videri, afranius derigatur sine sentit inliberali beatam scribendi splendide. Recusabo maximisque ferentur arbitraretur vellem oritur cupiditatibus copulatas.</p>
+                <ul class="mg-contact-info">
+                    <li><i class="fa fa-map-marker"></i>Plot No-100/7, Iringapuram Village, Chavakkad Taluk, Thrissur District, Kerala - 680103</li>
+                    <li><i class="fa fa-phone"></i>+91 9899156706 (Sale)</li>
+                    <li><i class="fa fa-envelope"></i> <a href="mailto:info@vandanamvillas.in">info@vandanamvillas.in</a></li>
+                </ul>
+                <div id="mg-map" class="mg-map"></div>
+            </div>
+
+           
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    <script src="~/Scripts/bootbox.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        var submitForm = $('form');
+        submitForm.submit(function () {
+
+            var isvalid = submitForm.valid()
+
+            if (isvalid) {
+
+                var serializedForm = $(this).serialize();
+                $.ajax({
+                    url: '@Url.Action("Create")',
+                    type: "POST",
+                    data: serializedForm,
+                    success: function (result) {                        
+                        bootbox.alert("Thank you submitting your information!!!", function () {
+                            $(".form-control").val("");
+                        });
+                        
+                    },
+                    error: function (result) {
+                     
+                        alert("Failed");
+                    }
+
+                });
+
+               
+                return false;
+            }
+
+        });
+
+
+        
+        
+    });
+
+</script>
+}
